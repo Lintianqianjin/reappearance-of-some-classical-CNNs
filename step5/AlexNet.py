@@ -8,23 +8,7 @@ sys.path.append('..\\step3')
 
 from generatorCompleted import batchGenerator
 
-def softmax(x):
-    np.seterr(divide='ignore', invalid='ignore')
-    return (np.exp(x).T / np.sum(np.exp(x), axis=1)).T
-
-
-def returnOneHot(NNOutput):
-    out = np.zeros(NNOutput.shape)
-    idx = NNOutput.argmax(axis=1)
-    out[np.arange(NNOutput.shape[0]), idx] = 1
-    return out
-
-def computeAccuracy(pred,label):
-    right = 0
-    for p,l in zip(pred,label):
-        if (p==l).all():
-            right+=1
-    return right/len(pred)
+from outputsUtils import softmax,returnOneHot,computeAccuracy
 
 # 定义超参数 开始
 batchSize = 256
@@ -86,10 +70,8 @@ with tf.Session() as sess:
 
     for i in range(1024):
 
-
         X, Y = G_Train.getBatch()
-        # print(X.shape)
-        # print(Y.shape)
+
         _,cur_loss = sess.run([train,loss], feed_dict={batchImgInput: X, labels: Y,keeProb:keep_prob_train})
 
         if i%8 == 0:
@@ -98,7 +80,6 @@ with tf.Session() as sess:
 
             # 验证集
             X_v, Y_v = G_Valid.getBatch()
-            # X_v, Y_v = X, Y
             output_v = softmax(sess.run(dense4,feed_dict={batchImgInput: X_v, labels: Y_v,keeProb:keep_prob_val}))
             output_v = returnOneHot(output_v)
             acc_v = computeAccuracy(output_v,Y_v)
