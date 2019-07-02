@@ -7,7 +7,7 @@
 
 ##### AlexNet的特点
 首先介绍一下AlexNet的模型结构。
-![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/AlexStructure.png)
+<img width="1500" height="300" src="https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/AlexStructure.png"/>  
 按照原论文的说法，即——
 第一卷积层用大小为11×11×3的96个卷积核（两个GPU个48个）对224×224×3的输入（图像大小224×224，3个通道）做卷积操作，卷积核的移动步长为4个像素。第二个卷积层将第一个卷积层的（经过了局部响应归一化和池化）输出作为输入，并用256个（连个GPU各128个）大小为5×5×48的卷积核做卷积操作。第三个，第四个和第五个卷积层直接连接没有局部响应归一化和池化操作。第三卷积层具有384个（两个GPU各192个）大小为3×3×256的卷积核（其实是两个GPU的输入各128个，但是在这一层，两个GPU间的数据进行了交换）。 第四个卷积层有384个（两个GPU各192个）大小为3×3×192的卷积核，第五个卷积层有256个（两个GPU各128个）大小为3×3×192的卷积核。全连接层各有4096个神经元。看图可知，作者的全连接层其实有三层，前两层是各2048个神经元，加起来4096个，第三层是直接两个GPU的输出一起全连接，神经元个数是标签的类别的数量，即1000个。
 
@@ -16,15 +16,17 @@
 按照作者自己认为重要性排序，其四个主要特点依次是：
 ###### 1.ReLu激活函数
 激活函数简单来说就是对一层的输出再经过一个函数变化后输入下一层。
-某层输出定义为$$X$$,激活函数定义为$$f$$，下一层接收到的数据为$$f(X)$$。
-![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu.png)
-作者使用ReLu激活函数的原因是模型训练起来，到达同样的精度，更快。如下图，实线是使用ReLu激活，虚线是使用tanh激活，错误率下降到25%时，后者需要训练的次数是前者的6倍作用
-![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu_train.png)
+某层输出定义为X,激活函数定义为f，下一层接收到的数据为f(X)。  
+
+<div align=center><img width="250" height="250" src="https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu.png"/></div>  
+
+作者使用ReLu激活函数的原因是模型训练起来，到达同样的精度，更快。如下图，实线是使用ReLu激活，虚线是使用tanh激活，错误率下降到25%时，后者需要训练的次数是前者的6倍作用  
+![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu_train.png)  
 ###### 2.使用多个GPU训练
 作者使用了两个GPU训练，但是两个GPU在某些特定的网络层会进行数据的交流。这一方面是提高了模型的训练速度，另一方面针对没有进行数据交流的模型，精度更高（作者说top1错误率下降了1.7%）。这个本次实训暂且不管，因为大部分人应该还是用个人笔记本来学习的。
 ###### 3.提出局部响应归一化（Local Response Normalization，LRN）
-作者对经过ReLu激活后的值，使用LRN做了归一化，如下,$$a$$是原始值，$$b$$是正则化之后的值,$$n$$即定义的局部的范围，其它参数均为常数，需要预先定义。有兴趣的可以去看论文，这里不赘述。
-![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/LRN.png)
+作者对经过ReLu激活后的值，使用LRN做了归一化，如下,a是原始值，b是正则化之后的值,n即定义的局部的范围，其它参数均为常数，需要预先定义。有兴趣的可以去看论文，这里不赘述。  
+![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/LRN.png)  
 一般而言，归一化后的输出会集中在一个比较小范围，是更利于模型的训练的。
 ###### 4.重叠的池化（Overlapping Pooling）操作
 一般的池化层因为没有重叠，意思是如果池化范围为3×3，那么每次移动也会移动三个单位，即步长为3。举个例子，一个9×9的矩阵，用3×3池化后就成了3×3的矩阵了。但是作者池化的范围是3×3，每次移动却只移动2，也就是说9×9的原始矩阵这样池化后，变成了4×4的矩阵。这个操作使得模型的top1错误率下降了0.4%。另外作者发现使用重叠的池化，与使用更小的池化范围（不重叠，产生相同大小的输出）相比，更不容易过拟合。
