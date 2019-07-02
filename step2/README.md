@@ -15,7 +15,7 @@
 
 示例如下：
 原图：
-![](/attachments/download/374284)
+![图片正在加载](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step2/%E5%8E%9F%E5%9B%BE.png)
 
 ```python
 import cv2
@@ -32,13 +32,13 @@ cv2.imwrite('fliped_X.png',img_fliped_X)
 cv2.imwrite('fliped_Y.png',img_fliped_Y)
 cv2.imwrite('fliped_X_Y.png',img_fliped_X_Y)
 ```
-输出：
+输出：  
 fliped_X.png
-![](/attachments/download/374285)
+![图片正在加载](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step2/flipedX.png)  
 fliped_Y.png
-![](/attachments/download/374286)
+![图片正在加载](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step2/flipedY.jpg)  
 fliped_X_Y.png
-![](/attachments/download/374287)
+![图片正在加载](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step2/flipedXY.jpg)  
 
 **在本次任务中，我们只需要用到水平翻转，因为结合现实情况，一般做车辆的识别，不会遇到倒着的车。**
 
@@ -58,7 +58,7 @@ cv2.imwrite('translation.png',img_change)
 
 输出：
 translation.png
-![](/attachments/download/374300)
+![图片正在加载](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step2/translation.jpg)  
 
 #### 编程要求
 
