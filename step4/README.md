@@ -19,7 +19,7 @@
 某层输出定义为$$X$$,激活函数定义为$$f$$，下一层接收到的数据为$$f(X)$$。
 ![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu.png)
 作者使用ReLu激活函数的原因是模型训练起来，到达同样的精度，更快。如下图，实线是使用ReLu激活，虚线是使用tanh激活，错误率下降到25%时，后者需要训练的次数是前者的6倍作用
-![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu train.png)
+![正在加载图片](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/step4/relu_train.png)
 ###### 2.使用多个GPU训练
 作者使用了两个GPU训练，但是两个GPU在某些特定的网络层会进行数据的交流。这一方面是提高了模型的训练速度，另一方面针对没有进行数据交流的模型，精度更高（作者说top1错误率下降了1.7%）。这个本次实训暂且不管，因为大部分人应该还是用个人笔记本来学习的。
 ###### 3.提出局部响应归一化（Local Response Normalization，LRN）
