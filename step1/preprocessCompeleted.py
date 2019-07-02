@@ -1,7 +1,7 @@
 import cv2
 import os
 
-def changeSize(BasePath = 'origin',targetPath = 'userOutputs'):
+def changeSize(BasePath = 'origin',targetPath = 'processed'):
 
     for root, dirs, files in os.walk(BasePath):
         for fileName in files:

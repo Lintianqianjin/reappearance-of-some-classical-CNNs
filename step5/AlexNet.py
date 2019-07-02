@@ -92,5 +92,4 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 plt.plot([i for i in range(1, len(acc_Val) + 1)], acc_Val, label=u'验证集准确率')
 plt.legend()
-# todo: 更换模型时要改名字
 plt.show()
