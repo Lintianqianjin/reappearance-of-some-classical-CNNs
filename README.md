@@ -20,7 +20,7 @@ each step folder contain a readme.md file
 step1、step2是对图片的一些预处理，调整至统一大小，数据增强等。  
 step3是batch生成器  
 step4是AlexNet  
-step5是VGGNet用到的预处理方法
+step5是VGGNet用到的预处理方法  
 step6是VGGNet的模型搭建
 
 ---
