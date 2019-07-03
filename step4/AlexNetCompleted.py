@@ -2,11 +2,6 @@
 # 论文一作的名字叫Alex，所以网络叫AlexNet
 
 import tensorflow as tf
-import sys
-
-sys.path.append('..\\step2')
-
-from generatorCompleted import batchGenerator
 
 # 定义超参数 开始
 batchSize = 256
@@ -79,22 +74,7 @@ loss = tf.reduce_mean(tf.cast(tf.nn.softmax_cross_entropy_with_logits_v2(logits=
 train = tf.train.AdamOptimizer().minimize(loss)
 # 定义训练 结束
 
+saver = tf.train.Saver()
 with tf.Session() as sess:
-    init = tf.global_variables_initializer()
-    sess.run(init)
-
-    # 新建一个生成器
-    G_Train = batchGenerator(batchSize=256)
-
-    for i in range(512):
-
-        # 从生成器获得X,和Y,即图片信息和标签
-        X, Y = G_Train.getBatch()
-
-        # 运行训练步骤,并返回本次的损失
-        _, cur_loss = sess.run([train, loss], feed_dict={batchImgInput: X, labels: Y, keeProb: keep_prob_train})
-
-        # 每8个batch 打印一次损失
-        if i % 8 == 0:
-            print(i, end=': loss: ')
-            print(cur_loss)
+    sess.run(tf.global_variables_initializer())
+    saver.save(sess, "userModelInfo/AlexNet.ckpt")
