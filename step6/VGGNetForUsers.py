@@ -13,6 +13,9 @@ def Conv(Inputs, kernel_height, kernel_width, num_kernels, stride_h, stride_w, n
     num_channels = Inputs.get_shape()[-1].value
 
     with tf.name_scope(name) as scope:
+
+        #********** Begin **********#
+
         # 设置卷积核
         kernel = tf.Variable(tf.truncated_normal(
             # todo: 补充shape参数的值
@@ -23,7 +26,7 @@ def Conv(Inputs, kernel_height, kernel_width, num_kernels, stride_h, stride_w, n
         # todo: 补充strides的参数值
         # conv = tf.nn.conv2d(Inputs, kernel, strides=, padding='SAME')
         # 添加偏执项
-        biases = tf.Variable(tf.constant(0.0, shape=[num_kernels], dtype=tf.float32), trainable=True, name='biases')
+        # biases = tf.Variable(tf.constant(0.0, shape=[num_kernels], dtype=tf.float32), trainable=True, name='biases')
 
         # Conv_plus_b = tf.nn.bias_add(conv, biases)
 
@@ -31,6 +34,7 @@ def Conv(Inputs, kernel_height, kernel_width, num_kernels, stride_h, stride_w, n
         # activation = tf.nn.relu(Conv_plus_b, name=scope)
         # return activation
 
+        #********** End **********#
 
 # 全连接层
 def Dense(Inputs, num_units, name):
@@ -41,6 +45,9 @@ def Dense(Inputs, num_units, name):
     # 获取输入（已经扁平化了）的长度
     n_in = Inputs.get_shape()[-1].value
     with tf.name_scope(name) as scope:
+
+        #********** Begin **********#
+
         # 设置权重矩阵 todo:补充shape参数
         # weights = tf.Variable(tf.truncated_normal(shape=, dtype=tf.float32), trainable=True,
         #                       name='weights')
@@ -54,6 +61,7 @@ def Dense(Inputs, num_units, name):
 
         # return activation
 
+        #********** End **********#
 
 # 最大池化层
 def mpool_op(Inputs, kernel_h, kernel_w, stride_h, stride_w, name):
@@ -61,6 +69,8 @@ def mpool_op(Inputs, kernel_h, kernel_w, stride_h, stride_w, name):
     "kernel_h, kernel_w,是池化的高/宽" \
     "stride_h, stride_w是移动的步长" \
     "name是该层的名字"
+
+    #********** Begin **********#
 
     return tf.nn.max_pool(Inputs,
                           # 池化范围 todo:补充该参数值
@@ -70,6 +80,7 @@ def mpool_op(Inputs, kernel_h, kernel_w, stride_h, stride_w, name):
                           padding='SAME',
                           name=name)
 
+    #********** End **********#
 
 if __name__ == '__main__':
     # 定义placeholder 开始
@@ -77,6 +88,8 @@ if __name__ == '__main__':
     keep_prob = tf.placeholder(tf.float32, shape=(), name='dropout_keep_prob')
     Labels = tf.placeholder(shape=(None, 4), dtype=tf.float32, name='Labels')
     # 定义placeholder 结束
+
+    # ********** Begin **********#
 
     # 第一部分 todo:根据VGG模型补充完整,请不要改变name参数
     # Part1_Conv1 = Conv(Input,
@@ -132,6 +145,8 @@ if __name__ == '__main__':
 
     # loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=dense3, labels=Labels))
     # train = tf.train.AdamOptimizer().minimize(loss)
+
+    # ********** End **********#
 
     #---以下代码不要改动---#
     saver = tf.train.Saver()

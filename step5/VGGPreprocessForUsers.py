@@ -11,6 +11,9 @@ def VGGPreprocessing(originImgMatrix):
     # axis=0，代表第一维，即把X（行）消除了，所以返回的是每一列RGB的均值，形状是（Y*3）
     # axis=1, 代表第二维，即把Y（列）消除了，所以返回的是全图的RGB的均值，形状是（3，）
     # todo: 正确完成RGBMean的计算
+
+    # ********** Begin **********#
+
     # originImgMatrix_RGBMean =
 
     # 直接减就行 todo: 减一减~
@@ -18,9 +21,16 @@ def VGGPreprocessing(originImgMatrix):
 
     # return subtract_Img
 
+    # ********** End **********#
+
 def VGGPreprocessingBatch(batch_originImgMatrix):
     for index, img in enumerate(batch_originImgMatrix):
+
+        # ********** Begin **********#
+
         # todo: 调用VGGPreprocessing 处理该样本的数据,并重新复制到到该样本的索引
+
+        # ********** End **********#
         pass
     return batch_originImgMatrix
 

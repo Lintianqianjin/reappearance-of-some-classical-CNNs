@@ -30,6 +30,9 @@ class batchGenerator:
         # 如果endIndex超过了list的长度，应该设置为None
 
         for fileName in self.fileList[self.curIndex:endIndex]:
+
+            # ********** Begin **********#
+
             # 读取当前图片
             file = os.path.join(self.basePath, fileName)
             image = cv2.imread(file)
@@ -57,5 +60,6 @@ class batchGenerator:
 
         # 改变curIndex的值
 
+        # ********** End **********#
 
         return np.array(curBatchX), np.array(curBatchY)
