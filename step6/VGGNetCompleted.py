@@ -2,10 +2,16 @@ import tensorflow as tf
 
 # 卷积层
 def Conv(Inputs, kernel_height, kernel_width, num_kernels, stride_h, stride_w, name):
-    "Inputs为上一层的输出，该层的输入；"\
-    "kernel_height,kernel_width,num_kernels分别是该层卷积的长\宽\数量"\
-    "stride_h, stride_w是该层卷积的移动步长"\
-    "name是该层的名字"
+    '''
+    :param Inputs: 上一层的输出，该层的输入
+    :param kernel_height: 该层卷积的长
+    :param kernel_width: 该层卷积的宽
+    :param num_kernels: 该层卷积的数量
+    :param stride_h: 该层卷积的移动步长纵向
+    :param stride_w: 该层卷积的移动步长横向
+    :param name: 该层的名字
+    :return:
+    '''
 
     # 获取输入的通道数
     num_channels = Inputs.get_shape()[-1].value
@@ -27,9 +33,13 @@ def Conv(Inputs, kernel_height, kernel_width, num_kernels, stride_h, stride_w, n
 
 # 全连接层
 def Dense(Inputs, num_units, name):
-    "Inputs为上一层的输出，该层的输入；" \
-    "num_units是该层的神经元数"\
-    "name是该层的名字"
+    '''
+
+    :param Inputs: 上一层的输出，该层的输入
+    :param num_units: 该层的神经元数
+    :param name: 该层的名字
+    :return:
+    '''
 
     # 获取输入（已经扁平化了）的长度
     n_in = Inputs.get_shape()[-1].value
@@ -49,11 +59,16 @@ def Dense(Inputs, num_units, name):
 
 
 # 最大池化层
-def mpool_op(Inputs, kernel_h, kernel_w, stride_h, stride_w, name):
-    "Inputs为上一层的输出，该层的输入；" \
-    "kernel_h, kernel_w,是池化的高/宽" \
-    "stride_h, stride_w是移动的步长"\
-    "name是该层的名字"
+def maxpool(Inputs, kernel_h, kernel_w, stride_h, stride_w, name):
+    '''
+    :param Inputs: 上一层的输出，该层的输入
+    :param kernel_h: 池化的高
+    :param kernel_w: 池化的宽
+    :param stride_h: 移动的步长纵向
+    :param stride_w: 移动的步长横向
+    :param name: 该层名字
+    :return:
+    '''
 
     return tf.nn.max_pool(Inputs,
                           # 池化范围
@@ -77,14 +92,14 @@ if __name__ == '__main__':
                        name='Part1_Conv1')
     Part1_Conv2 = Conv(Part1_Conv1, kernel_height=3, kernel_width=3, stride_h=1, stride_w=1, num_kernels=64,
                        name='Part1_Conv2')
-    Part1_pool1 = mpool_op(Part1_Conv2, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part1_pool1")
+    Part1_pool1 = maxpool(Part1_Conv2, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part1_pool1")
 
     # 第二部分
     Part2_Conv1 = Conv(Part1_pool1, kernel_height=3, kernel_width=3, stride_h=1, stride_w=1, num_kernels=128,
                        name='Part2_Conv1')
     Part2_Conv2 = Conv(Part2_Conv1, kernel_height=3, kernel_width=3, stride_h=1, stride_w=1, num_kernels=128,
                        name='Part2_Conv2')
-    Part2_pool1 = mpool_op(Part2_Conv2, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part2_pool1")
+    Part2_pool1 = maxpool(Part2_Conv2, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part2_pool1")
 
     # 第三部分
     Part3_Conv1 = Conv(Part2_pool1, kernel_height=3, kernel_width=3, stride_h=1, stride_w=1, num_kernels=256,
@@ -93,7 +108,7 @@ if __name__ == '__main__':
                        name='Part3_Conv2')
     Part3_Conv3 = Conv(Part3_Conv2, kernel_height=1, kernel_width=1, stride_h=1, stride_w=1, num_kernels=256,
                        name='Part3_Conv3')
-    Part3_pool1 = mpool_op(Part3_Conv3, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part3_pool1")
+    Part3_pool1 = maxpool(Part3_Conv3, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part3_pool1")
 
     # 第四部分
     Part4_Conv1 = Conv(Part3_pool1, kernel_height=3, kernel_width=3, stride_h=1, stride_w=1, num_kernels=512,
@@ -102,7 +117,7 @@ if __name__ == '__main__':
                        name='Part4_Conv2')
     Part4_Conv3 = Conv(Part4_Conv2, kernel_height=1, kernel_width=1, stride_h=1, stride_w=1, num_kernels=512,
                        name='Part4_Conv3')
-    Part4_pool1 = mpool_op(Part4_Conv3, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part4_pool1")
+    Part4_pool1 = maxpool(Part4_Conv3, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part4_pool1")
 
     # 针对本任务，一个4分类的问题，其实网络太深不见得好，这里直接省略掉第五层（如下，不用取消注释）
     # Part5_Conv1 = Conv(Part4_pool1, kernel_height=3, kernel_width=3, stride_h=1, stride_w=1, num_kernels=512,
@@ -111,7 +126,7 @@ if __name__ == '__main__':
     #                    name='Part4_Conv2')
     # Part5_Conv3 = Conv(Part5_Conv2, kernel_height=1, kernel_width=1, stride_h=1, stride_w=1, num_kernels=512,
     #                    name='Part4_Conv3')
-    # Part5_pool1 = mpool_op(Part5_Conv3, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part5_pool1")
+    # Part5_pool1 = maxpool(Part5_Conv3, kernel_h=2, kernel_w=2, stride_w=2, stride_h=2, name="Part5_pool1")
 
     # 全连接部分
     # flatten扁平化

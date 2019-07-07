@@ -3,6 +3,7 @@ import os
 
 # *****需要取消注释的地方请取消注释*****
 def changeSize(BasePath='origin', targetPath='userOutputs'):
+    pass
     # ********** Begin **********#
 
     # 请使用os.walk()循环origin目录下的全部文件
