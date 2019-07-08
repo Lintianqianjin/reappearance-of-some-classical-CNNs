@@ -81,6 +81,10 @@ def maxpool(Inputs, kernel_h, kernel_w, stride_h=None, stride_w=None, name=None)
                           padding='SAME',
                           name=name)
 
+# todo: 根据提示完成三个Inception module和一个reduction的编写
+# todo: 根据提示完成main函数中model的编写
+
+#********** Begin **********#
 # Inception module 1
 def Inception_traditional(Inputs,nfilters_11=64,nfilters_11Before33=64,
                           nfilters_11Before55=48,nfilters_11After33Pool=32,
@@ -94,31 +98,27 @@ def Inception_traditional(Inputs,nfilters_11=64,nfilters_11Before33=64,
     :param nfilters_11Before55: 5×5卷积层前的1×1卷积降维的卷积核数
     :param nfilters_11After33Pool: 3×3池化后的1×1卷积核的数量
     :param nfilters_33: 3×3卷积层的卷积核数
-    :param nfilters_55: 5×5卷积层的卷积核数（下面的实现用俩个3×3替代了5×5，两个3×3的卷积核数都为该参数）
+    :param nfilters_55: 5×5卷积层的卷积核数（下面的实现用两个3×3替代5×5，两个3×3的卷积核数都为该参数）
     :param name: 该层的名字
     :return:
     '''
 
     # 1×1的卷积层
-    conv1 = Conv(Inputs,num_kernels=nfilters_11,kernel_height=1,kernel_width=1)
+
 
     # 3×3的卷积层
-    conv2_1 = Conv(Inputs,num_kernels=nfilters_11Before33,kernel_height=1,kernel_width=1)
-    conv2_2 = Conv(conv2_1,num_kernels=nfilters_33,kernel_height=3,kernel_width=3)
 
-    # 5×5的卷积层
-    conv3_1 = Conv(Inputs,num_kernels=nfilters_11Before55,kernel_height=1,kernel_width=1)
-    conv3_2 = Conv(conv3_1,num_kernels=nfilters_55,kernel_height=3,kernel_width=3)
-    conv3_3 = Conv(conv3_2,num_kernels=nfilters_55,kernel_height=3,kernel_width=3)
+
+    # 5×5（2个3×3）的卷积层
+
 
     # 池化+卷积
-    pool = averagePool(Inputs,kernel_h=3,kernel_w=3,stride_h=1,stride_w=1)
-    conv4 = Conv(pool,num_kernels= nfilters_11After33Pool,kernel_height=1,kernel_width=1)
+
 
     # 在通道维度上拼接各输出
-    outputs = tf.concat([conv1,conv2_2,conv3_3,conv4],axis=-1)
 
-    return outputs
+
+    # return outputs
 
 # Inception module 2 带不对称的卷积
 def Inception_AsymmetricConv(Inputs,nfilters_11=192,nfilters_11Before7=128,
@@ -141,28 +141,21 @@ def Inception_AsymmetricConv(Inputs,nfilters_11=192,nfilters_11Before7=128,
     '''
 
     # 1×1的卷积层
-    conv1 = Conv(Inputs,num_kernels=nfilters_11,kernel_height=1,kernel_width=1)
+
 
     # 1×7然后7×1的卷积层
-    conv2_1 = Conv(Inputs,num_kernels=nfilters_11Before7,kernel_height=1,kernel_width=1)
-    conv2_2 = Conv(conv2_1,num_kernels=nfilters_7,kernel_height=1,kernel_width=7)
-    conv2_3 = Conv(conv2_2,num_kernels=nfilters_7,kernel_height=7,kernel_width=1)
+
 
     # 7×1，1×7然后又7×1，1×7的卷积层
-    conv3_1 = Conv(Inputs,num_kernels=nfilters_11Before77,kernel_height=1,kernel_width=1)
-    conv3_2 = Conv(conv3_1,num_kernels=nfilters_77,kernel_height=7,kernel_width=1)
-    conv3_3 = Conv(conv3_2,num_kernels=nfilters_77,kernel_height=1,kernel_width=7)
-    conv3_4 = Conv(conv3_3, num_kernels=nfilters_77, kernel_height=7, kernel_width=1)
-    conv3_5 = Conv(conv3_4, num_kernels=nfilters_77, kernel_height=1, kernel_width=7)
+
 
     # 池化+卷积
-    pool = averagePool(Inputs,kernel_h=3,kernel_w=3,stride_h=1,stride_w=1)
-    conv4 = Conv(pool,num_kernels= nfilters_11After33Pool,kernel_height=1,kernel_width=1)
+
 
     # 在通道维度上拼接各输出
-    outputs = tf.concat([conv1,conv2_3,conv3_5,conv4],axis=-1)
 
-    return outputs
+
+    # return outputs
 
 # Inception module 3 平行的不对称的卷积
 def Inception_parallelAsymmetricConv(Inputs,nfilters_11=320,nfilters_11Before33=384,
@@ -182,29 +175,20 @@ def Inception_parallelAsymmetricConv(Inputs,nfilters_11=320,nfilters_11Before33=
     '''
 
     # 1×1的卷积层
-    conv1 = Conv(Inputs, num_kernels=nfilters_11, kernel_height=1, kernel_width=1)
 
-    # 3×3的卷积层
-    conv2_1 = Conv(Inputs, num_kernels=nfilters_11Before33, kernel_height=1, kernel_width=1)
-    conv2_21 = Conv(conv2_1, num_kernels=nfilters_33, kernel_height=1, kernel_width=3)
-    conv2_22 = Conv(conv2_1, num_kernels=nfilters_33, kernel_height=3, kernel_width=1)
-    conv2_3 = tf.concat([conv2_21,conv2_22],axis=-1)
 
-    # 两个3×3的卷积层
-    conv3_1 = Conv(Inputs, num_kernels=nfilters_11Before55, kernel_height=1, kernel_width=1)
-    conv3_2 = Conv(conv3_1, num_kernels=nfilters_55, kernel_height=3, kernel_width=3)
-    conv3_31 = Conv(conv3_2, num_kernels=nfilters_55, kernel_height=1, kernel_width=3)
-    conv3_32 = Conv(conv3_2, num_kernels=nfilters_55, kernel_height=3, kernel_width=1)
-    conv3_4 = tf.concat([conv3_31, conv3_32], axis=-1)
+    # 3×3的卷积层，拼接1×3和3×1 两个并行的卷积
+
+
+    # 两个3×3的卷积层，第一个3×3正常卷积，第二个拼接1×3和3×1 两个并行的卷积
+
 
     # 池化+卷积
-    pool = averagePool(Inputs, kernel_h=3, kernel_w=3, stride_h=1, stride_w=1)
-    conv4 = Conv(pool, num_kernels=nfilters_11After33Pool, kernel_height=1, kernel_width=1)
 
     # 在通道维度上拼接各输出
-    outputs = tf.concat([conv1, conv2_3, conv3_4, conv4], axis=-1)
 
-    return outputs
+
+    # return outputs
 
 # 池化和卷积并行的降特征图尺寸的方法
 def reduction(Inputs,nfilters_11Before33=192,nfilters_11Before55=192,
@@ -219,22 +203,20 @@ def reduction(Inputs,nfilters_11Before33=192,nfilters_11Before55=192,
     :return:
     '''
 
-    # 3×3卷积
-    conv1_1 = Conv(Inputs,num_kernels=nfilters_11Before33,kernel_height=1,kernel_width=1)
-    conv1_2 = Conv(conv1_1,num_kernels=nfilters_33,kernel_height=3,kernel_width=3,stride_h=2,stride_w=2)
+    # 3×3卷积，注意步长
 
-    # 两个3×3卷积
-    conv2_1 = Conv(Inputs,num_kernels=nfilters_11Before55,kernel_height=1,kernel_width=1)
-    conv2_2 = Conv(conv2_1,num_kernels=nfilters_55,kernel_height=3,kernel_width=3,stride_h=1,stride_w=1)
-    conv2_3 = Conv(conv2_2,num_kernels=nfilters_55,kernel_height=3,kernel_width=3,stride_h=2,stride_w=2)
 
-    # 池化
-    pool = averagePool(Inputs,kernel_h=3,kernel_w=3,stride_h=2,stride_w=2)
+    # 两个3×3卷积 最后一个卷积注意步长
+
+
+    # 池化，注意步长
+
 
     # 拼接
-    outputs = tf.concat([conv1_2,conv2_3,pool],axis=-1)
 
-    return outputs
+    # return outputs
+
+#********** End **********#
 
 # 模型初始的部分
 def InitialPart(Inputs):
@@ -260,38 +242,35 @@ if __name__ == '__main__':
     Labels = tf.placeholder(shape=(None, 4), dtype=tf.float32, name='Labels')
     # 定义placeholder 结束
 
+    #********** Begin **********#
     # 模型初始部分
     processedInitially = InitialPart(Input)
-    Inception_traditional_1 = Inception_traditional(processedInitially)
-    Inception_traditional_2 = Inception_traditional(Inception_traditional_1)
-    Inception_traditional_3 = Inception_traditional(Inception_traditional_2)
 
-    reduction_1 = reduction(Inception_traditional_3)
+    # 叠三个nception_traditional
 
-    Inception_Asymmetric_1 = Inception_AsymmetricConv(reduction_1)
-    Inception_Asymmetric_2 = Inception_AsymmetricConv(Inception_Asymmetric_1)
-    Inception_Asymmetric_3 = Inception_AsymmetricConv(Inception_Asymmetric_2)
-    Inception_Asymmetric_4 = Inception_AsymmetricConv(Inception_Asymmetric_3)
+    # reduction一次
 
-    reduction_2 = reduction(Inception_Asymmetric_4)
+    # 叠四个Inception_AsymmetricConv
 
-    Inception_parallelAsymmetric_1 =Inception_parallelAsymmetricConv(reduction_2)
-    Inception_parallelAsymmetric_2 =Inception_parallelAsymmetricConv(Inception_parallelAsymmetric_1)
-    Inception_parallelAsymmetric_3 =Inception_parallelAsymmetricConv(Inception_parallelAsymmetric_2)
+    # reduction一次
 
-    featureSize = Inception_parallelAsymmetric_3.get_shape()[1].value
-    averagePool1 = averagePool(Inception_parallelAsymmetric_3,kernel_w=featureSize,kernel_h=featureSize)
+    # 叠三个Inception_parallelAsymmetricConv
 
-    flattened = tf.layers.flatten(averagePool1)
-    dropout = tf.nn.dropout(flattened, keep_prob)
-    dense = tf.layers.dense(dropout, units=4)
+    # 平均池化成一张图一个值
+    # featureSize = Inception_parallelAsymmetric_3.get_shape()[1].value
 
-    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=dense, labels=Labels))
-    train = tf.train.AdamOptimizer().minimize(loss)
+    # flatten然后dropout然后全连接
 
+    #********** End **********#
+
+    # loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=dense, labels=Labels))
+    # train = tf.train.AdamOptimizer().minimize(loss)
+
+
+    # 以下不要改动
     saver = tf.train.Saver()
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        saver.save(sess, "modelInfo/InceptionNet.ckpt")
+        saver.save(sess, "userModelInfo/InceptionNet.ckpt")
 
 
