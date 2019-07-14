@@ -6,17 +6,22 @@ from generatorCompleted import batchGenerator
 from outputsUtils import softmax, returnOneHot, computeAccuracy
 
 with tf.Session() as sess:
-    saver = tf.train.import_meta_graph('Model/ResNet.ckpt.meta')
+    saver = tf.train.import_meta_graph('Model/ResNet.meta')
     saver.restore(sess, tf.train.latest_checkpoint('Model'))
+
+    graph = tf.get_default_graph()
+
+    for op in graph.get_operations():
+        print(op.name)
+    mm = graph.get_tensor_by_name("batch_normalization/moving_mean:0")
+    print(sess.run(mm))
+    exit()
 
     G_Valid = batchGenerator(batchSize=80, basePath='..\\step1\\processed\\valid_224')
     X_v, Y_v = G_Valid.getBatch()
 
-    graph = tf.get_default_graph()
-
-    # for op in graph.get_operations():
-    #     print(op.name)
     batchImgInput = graph.get_tensor_by_name("batchImgInput:0")
+
     labels = graph.get_tensor_by_name("Labels:0")
     keeProb = graph.get_tensor_by_name("dropout_keep_prob:0")
     BNTraining = graph.get_tensor_by_name("BNTraining:0")
