@@ -4,51 +4,13 @@ import tensorflow as tf
 
 sys.path.append('..\\step7')
 sys.path.append('..\\step3')
+sys.path.append('..\\step9')
+sys.path.append('..\\step8')
 
 from generatorCompleted import batchGenerator
-from outputsUtils import softmax, returnOneHot, computeAccuracy
+from outputsUtilsCompleted import softmax, returnOneHot, computeAccuracy
 from InceptionCompleted import Conv, maxpool
-
-
-def multiChannelWeightLayer(Inputs, name, batchNormTraining):
-    batchNorm = tf.layers.batch_normalization(Inputs, training=batchNormTraining)
-    relu = tf.nn.relu(batchNorm)
-    transposed = tf.transpose(relu, [0, 3, 1, 2])
-    num_channels = Inputs.get_shape()[-1].value
-    size = Inputs.get_shape()[1].value
-    batch = 80
-
-    weight = tf.get_variable(name=f'{name}_Weight', shape=(size, size), dtype=tf.float32, trainable=True)
-    weight_expand = tf.expand_dims(weight, axis=0)
-    weight_nchannels = tf.tile(weight_expand, tf.constant([num_channels, 1, 1]))
-    batch_expand = tf.expand_dims(weight_nchannels, axis=0)
-    weight_final = tf.tile(batch_expand, tf.constant([batch, 1, 1, 1]))
-
-    WX = tf.matmul(transposed, weight_final)
-
-    bias = tf.get_variable(name=f'{name}_Bias', shape=(size), dtype=tf.float32, trainable=True)
-    bias_expand = tf.expand_dims(bias, axis=0)
-    bias_size = tf.tile(bias_expand, tf.constant([size, 1]))
-    bias_channels_expand = tf.expand_dims(bias_size, axis=0)
-    bias_channels = tf.tile(bias_channels_expand, tf.constant([num_channels, 1, 1]))
-    bias_batch_expand = tf.expand_dims(bias_channels, axis=0)
-    bias_final = tf.tile(bias_batch_expand, tf.constant([batch, 1, 1, 1]))
-
-    WX_PLUS_B = WX + bias_final
-
-    outputs = tf.transpose(WX_PLUS_B, [0, 2, 3, 1])
-
-    return outputs
-
-
-def ResNetBlock(Inputs, name, batchNormTraining):
-    shortcut = Inputs
-    wx_1 = multiChannelWeightLayer(Inputs, batchNormTraining=batchNormTraining, name=f'{name}_firstHalf')
-    res = multiChannelWeightLayer(wx_1, batchNormTraining=batchNormTraining, name=f'{name}_latterHalf')
-    outputs = tf.add(shortcut, res)
-
-    return outputs
-
+from ResNetCompleted import multiChannelWeightLayer,ResNetBlock
 
 if __name__ == '__main__':
     # 定义超参数 开始
@@ -90,7 +52,6 @@ if __name__ == '__main__':
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     with tf.control_dependencies(update_ops):
         train = tf.train.AdamOptimizer().minimize(loss)
-        # train_op = tf.group([train, update_ops])
 
     saver = tf.train.Saver(var_list=tf.global_variables(),max_to_keep=1)
 
@@ -128,16 +89,16 @@ if __name__ == '__main__':
 
                 if acc_v > 0.7 and acc_v > max_acc:
                     max_acc = acc_v
-                    saver.save(sess, "Model/ResNet")
+                    saver.save(sess, "Model/FinalNet")
 
         print('****')
         print(max_acc)
 
-
-    import matplotlib.pyplot as plt
-
-    plt.rcParams['font.sans-serif'] = ['SimHei']
-    plt.rcParams['axes.unicode_minus'] = False
-    plt.plot([i for i in range(1, len(acc_Val) + 1)], acc_Val, label=u'验证集准确率')
-    plt.legend()
-    plt.show()
+    #
+    # import matplotlib.pyplot as plt
+    #
+    # plt.rcParams['font.sans-serif'] = ['SimHei']
+    # plt.rcParams['axes.unicode_minus'] = False
+    # plt.plot([i for i in range(1, len(acc_Val) + 1)], acc_Val, label=u'验证集准确率')
+    # plt.legend()
+    # plt.show()

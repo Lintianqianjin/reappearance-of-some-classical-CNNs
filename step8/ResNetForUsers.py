@@ -1,8 +1,9 @@
 import tensorflow as tf
 import sys
+
 sys.path.append('..\\step7')
 
-from InceptionCompleted import Conv,maxpool
+from InceptionCompleted import Conv, maxpool
 
 
 def multiChannelWeightLayer(Inputs, name, batchNormTraining):
@@ -14,7 +15,8 @@ def multiChannelWeightLayer(Inputs, name, batchNormTraining):
     :return:
     '''
 
-    batchNorm = tf.layers.batch_normalization(Inputs, training=batchNormTraining)
+    #********** Begin **********#
+    batchNorm = tf.layers.batch_normalization()
     relu = tf.nn.relu(batchNorm)
     transposed = tf.transpose(relu, [0, 3, 1, 2])
     num_channels = Inputs.get_shape()[-1].value
@@ -43,6 +45,7 @@ def multiChannelWeightLayer(Inputs, name, batchNormTraining):
 
     return outputs
 
+    #********** End **********#
 
 def ResNetBlock(Inputs, name, batchNormTraining):
     '''
@@ -58,7 +61,6 @@ def ResNetBlock(Inputs, name, batchNormTraining):
     outputs = tf.add(shortcut, res)
 
     return outputs
-
 
 
 if __name__ == '__main__':

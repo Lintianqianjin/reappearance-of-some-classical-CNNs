@@ -1,7 +1,7 @@
 import filecmp
 
-rightModelPath = 'modelInfo/InceptionNet.meta'
-userModelPath = 'userModelInfo/InceptionNet.meta'
+rightModelPath = 'modelInfo/ResNet.meta'
+userModelPath = 'userModelInfo/ResNet.meta'
 
 isRight = filecmp.cmp(rightModelPath, userModelPath)
 
