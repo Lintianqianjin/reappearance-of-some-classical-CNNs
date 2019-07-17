@@ -26,17 +26,18 @@ if __name__ == '__main__':
     keeProb = tf.placeholder(tf.float32, shape=(), name='dropout_keep_prob')
     batchImgInput = tf.placeholder(tf.float32, shape=(None, img_size, img_size, n_channels), name='batchImgInput')
     labels = tf.placeholder(tf.float32, shape=(None, label_size), name='Labels')
+    InputBatchSize = tf.placeholder(tf.int32, shape=(),name='InputBatchSize')
 
     conv1 = Conv(batchImgInput, num_kernels=96, kernel_width=11, kernel_height=11, stride_w=4, stride_h=4)
     pool1 = maxpool(conv1, kernel_h=2, kernel_w=2, stride_h=2, stride_w=2)
     conv2 = Conv(pool1, num_kernels=128, kernel_width=3, kernel_height=3, stride_w=1, stride_h=1)
     pool2 = maxpool(conv2, kernel_h=3, kernel_w=3, stride_h=2, stride_w=2)
 
-    resBlock1 = ResNetBlock(pool2, batchNormTraining=BNTraining, name='resblock_1')
+    resBlock1 = ResNetBlock(pool2, batchNormTraining=BNTraining, name='resblock_1',bacthSize=InputBatchSize)
     conv4 = Conv(resBlock1, num_kernels=128, kernel_width=3, kernel_height=3, stride_w=1, stride_h=1)
-    resBlock2 = ResNetBlock(conv4, batchNormTraining=BNTraining, name='resblock_2')
+    resBlock2 = ResNetBlock(conv4, batchNormTraining=BNTraining, name='resblock_2',bacthSize=InputBatchSize)
     conv5 = Conv(resBlock2, num_kernels=64, kernel_width=3, kernel_height=3, stride_w=1, stride_h=1)
-    resBlock3 = ResNetBlock(conv5, batchNormTraining=BNTraining, name='resblock_3')
+    resBlock3 = ResNetBlock(conv5, batchNormTraining=BNTraining, name='resblock_3',bacthSize=InputBatchSize)
     conv6 = Conv(resBlock3, num_kernels=64, kernel_width=3, kernel_height=3, stride_w=1, stride_h=1)
 
     pool3 = maxpool(conv6, kernel_h=2, kernel_w=2, stride_h=2, stride_w=2)
@@ -59,7 +60,7 @@ if __name__ == '__main__':
         init = tf.global_variables_initializer()
         sess.run(init)
 
-        G_Train = batchGenerator(batchSize=80)
+        G_Train = batchGenerator(batchSize=128)
         G_Valid = batchGenerator(batchSize=80, basePath='..\\step1\\processed\\valid_224')
 
         acc_Train = []
@@ -69,9 +70,9 @@ if __name__ == '__main__':
         for i in range(128):
 
             X, Y = G_Train.getBatch()
-
+            cur_BatchSize = X.shape[0]
             _, cur_loss = sess.run([train, loss],
-                                   feed_dict={batchImgInput: X, labels: Y, keeProb: keep_prob_train, BNTraining: True})
+                                   feed_dict={batchImgInput: X, labels: Y, keeProb: keep_prob_train, BNTraining: True,InputBatchSize:cur_BatchSize})
 
             if i % 1 == 0:
                 print(i, end=': loss: ')
@@ -81,7 +82,7 @@ if __name__ == '__main__':
                 X_v, Y_v = G_Valid.getBatch()
                 output_v = softmax(
                     sess.run(dense2,
-                             feed_dict={batchImgInput: X_v, labels: Y_v, keeProb: keep_prob_val, BNTraining: False}))
+                             feed_dict={batchImgInput: X_v, labels: Y_v, keeProb: keep_prob_val, BNTraining: False,InputBatchSize:80}))
                 output_v = returnOneHot(output_v)
                 acc_v = computeAccuracy(output_v, Y_v)
                 acc_Val.append(acc_v)
@@ -91,14 +92,4 @@ if __name__ == '__main__':
                     max_acc = acc_v
                     saver.save(sess, "Model/FinalNet")
 
-        print('****')
-        print(max_acc)
 
-    #
-    # import matplotlib.pyplot as plt
-    #
-    # plt.rcParams['font.sans-serif'] = ['SimHei']
-    # plt.rcParams['axes.unicode_minus'] = False
-    # plt.plot([i for i in range(1, len(acc_Val) + 1)], acc_Val, label=u'验证集准确率')
-    # plt.legend()
-    # plt.show()

@@ -24,22 +24,43 @@ batchImgInput = tf.placeholder(tf.float32, shape=(None, img_size, img_size, n_ch
 labels = tf.placeholder(tf.float32, shape=(None, label_size))
 # 定义placeholder 结束
 
+# user todo: 根据提示和现有代码补充完整
+#********** Begin **********#
+
 # 第一层卷积+归一化+池化 开始
-conv1 = tf.keras.layers.Conv2D(filters=96, kernel_size=(11, 11), strides=(4, 4),padding='valid', activation='relu')(batchImgInput)
-lrn1 = tf.nn.local_response_normalization(conv1, alpha=1e-4, beta=0.75, depth_radius=2, bias=2.0)
-pool1 = tf.keras.layers.MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding='valid')(conv1)
+# 要求使用tf.keras.layers.Conv2D()
+# 参数：96个卷积核,大小11×11, 步长4，padding设置为'valid',激活函数relu
+# conv1 =
+
+# 要求使用tf.nn.local_response_normalization()
+# alpha取1e-4, beta取0.75, depth_radius取2, bias取2.0
+# lrn1 = tf.nn.local_response_normalization()
+
+# 要求使用tf.keras.layers.MaxPooling2D()
+# 最大池化范围为3×3，步长为2，padding为valid
+# pool1 = tf.keras.layers.MaxPooling2D()
 # 第一层卷积+归一化+池化 结束
 
+
 # 第二层卷积+归一化+池化 开始
-conv2 = tf.keras.layers.Conv2D(filters=256, kernel_size=(5, 5), strides=(1, 1),padding='same', activation='relu')(pool1)
-lrn2 = tf.nn.local_response_normalization(conv2, alpha=1e-4, beta=0.75, depth_radius=2, bias=2.0)
-pool2 = tf.keras.layers.MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding='valid')(conv2)
+# 要求使用tf.keras.layers.Conv2D()
+# 参数：256个卷积核,大小5×5, 步长1，padding设置为'same',激活函数relu
+# conv2 = tf.keras.layers.Conv2D()
+
+# 要求同上
+# lrn2 = tf.nn.local_response_normalization()
+
+# 要求同上
+# pool2 = tf.keras.layers.MaxPooling2D()
 # 第二层卷积+归一化+池化 结束
 
+
 # 定义三层直接连接的卷积 开始
-conv3 = tf.keras.layers.Conv2D(filters=192, kernel_size=(3, 3), strides=(1, 1),padding='same', activation='relu')(pool2)
-conv4 = tf.keras.layers.Conv2D(filters=192, kernel_size=(3, 3), strides=(1, 1),padding='same', activation='relu')(conv3)
-conv5 = tf.keras.layers.Conv2D(filters=128, kernel_size=(3, 3), strides=(1, 1),padding='same', activation='relu')(conv4)
+# 要求堆叠三个卷积层，卷积核大小均为3×3，步长1，padding为same，激活函数用relu
+# 卷积核数分别为192 192 128
+# conv3 =
+# conv4 =
+# conv5 =
 # 定义三层直接连接的卷积 结束
 
 # 池化后变为一维 开始
@@ -48,9 +69,13 @@ flatten = tf.keras.layers.Flatten()(pool3)
 # 池化后变为一维 结束
 
 # 第一层全连接+随机失活 开始
-dense1 = tf.keras.layers.Dense(units=512, activation='relu')(flatten)
-dropout1 = tf.nn.dropout(dense1, keeProb)
+# 要求使用tf.keras.layers.Dense()
+# 该层要求512个神经元，激活函数relu
+# dense1 = tf.keras.layers.Dense()
+# dropout1 = tf.nn.dropout(dense1, keeProb)
 # 第一层全连接+随机失活 结束
+#********** End **********#
+
 
 # 第二层全连接+随机失活 开始
 dense2 = tf.keras.layers.Dense(units=512, activation='relu')(dropout1)
@@ -74,22 +99,10 @@ loss = tf.reduce_mean(tf.cast(tf.nn.softmax_cross_entropy_with_logits_v2(logits=
 train = tf.train.AdamOptimizer().minimize(loss)
 # 定义训练 结束
 
+
+
+# 以下不用管
+saver = tf.train.Saver()
 with tf.Session() as sess:
-    init = tf.global_variables_initializer()
-    sess.run(init)
-
-    # 新建一个生成器
-    G_Train = batchGenerator(batchSize=256)
-
-    for i in range(512):
-
-        # 从生成器获得X,和Y,即图片信息和标签
-        X, Y = G_Train.getBatch()
-
-        # 运行训练步骤,并返回本次的损失
-        _,cur_loss = sess.run([train,loss], feed_dict={batchImgInput: X, labels: Y,keeProb:keep_prob_train})
-
-        # 每8个batch 打印一次损失
-        if i%8 == 0:
-            print(i, end=': loss: ')
-            print(cur_loss)
+    sess.run(tf.global_variables_initializer())
+    saver.save(sess, "userModelInfo/AlexNet")

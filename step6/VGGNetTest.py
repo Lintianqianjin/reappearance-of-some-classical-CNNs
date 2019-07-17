@@ -1,11 +1,14 @@
 import filecmp
 
-rightModelPath = 'modelInfo/VGGNet.ckpt.meta'
-userModelPath = 'userModelInfo/VGGNet.ckpt.meta'
+rightModelPath = 'modelInfo/VGGNet.meta'
+userModelPath = 'userModelInfo/VGGNet.meta'
 
-isRight = filecmp.cmp(rightModelPath, userModelPath)
+try:
+    isRight = filecmp.cmp(rightModelPath, userModelPath)
 
-if isRight:
-    print('Right')
-else:
+    if isRight:
+        print('Right')
+    else:
+        print('Wrong')
+except:
     print('Wrong')

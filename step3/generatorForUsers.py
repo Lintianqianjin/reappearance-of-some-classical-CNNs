@@ -31,7 +31,7 @@ class batchGenerator:
 
         for fileName in self.fileList[self.curIndex:endIndex]:
 
-            # ********** Begin **********#
+            #********** Begin **********#
 
             # 读取当前图片
             file = os.path.join(self.basePath, fileName)
@@ -60,6 +60,6 @@ class batchGenerator:
 
         # 改变curIndex的值
 
-        # ********** End **********#
+        #********** End **********#
 
         return np.array(curBatchX), np.array(curBatchY)

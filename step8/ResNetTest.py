@@ -3,9 +3,13 @@ import filecmp
 rightModelPath = 'modelInfo/ResNet.meta'
 userModelPath = 'userModelInfo/ResNet.meta'
 
-isRight = filecmp.cmp(rightModelPath, userModelPath)
+try:
 
-if isRight:
-    print('Right')
-else:
+    isRight = filecmp.cmp(rightModelPath, userModelPath)
+
+    if isRight:
+        print('Right')
+    else:
+        print('Wrong')
+except:
     print('Wrong')

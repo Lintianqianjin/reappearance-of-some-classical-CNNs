@@ -145,4 +145,4 @@ if __name__ == '__main__':
     saver = tf.train.Saver()
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        saver.save(sess, "modelInfo/VGGNet.ckpt")
+        saver.save(sess, "modelInfo/VGGNet")

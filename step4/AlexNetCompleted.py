@@ -77,4 +77,4 @@ train = tf.train.AdamOptimizer().minimize(loss)
 saver = tf.train.Saver()
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
-    saver.save(sess, "userModelInfo/AlexNet.ckpt")
+    saver.save(sess, "ModelInfo/AlexNet")
