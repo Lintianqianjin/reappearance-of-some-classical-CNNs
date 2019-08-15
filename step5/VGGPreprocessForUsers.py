@@ -1,36 +1,20 @@
 import numpy as np
 
-def VGGPreprocessing(originImgMatrix):
-    "The only preprocessing we do is subtracting the mean RGB value, \
-    computed on the training set, from each pixel.\
-    原论文中对输入的RGB矩阵做了一个减去均值的预处理，该函数实现这个预处理"
-    if type(originImgMatrix) is not np.ndarray:
-        originImgMatrix = np.ndarray(originImgMatrix)
+def VGGPreprocessingBatch(batch_originImgMatrix):
+    '''
+    你需要对batch中的每一个img的数据作如下预处理:
+    各个像素点上rgb三个通道上的值，均减去该图片上三个通道分别的均值
+    例如整张img r通道均值为2, g通道均值为1, b通道均值为3
+    某像素点为[5,1,0], 则处理后，该像素点为[3,0,-3]
 
-    # 矩阵X*Y*3
-    # axis=0，代表第一维，即把X（行）消除了，所以返回的是每一列RGB的均值，形状是（Y*3）
-    # axis=1, 代表第二维，即把Y（列）消除了，所以返回的是全图的RGB的均值，形状是（3，）
-    # todo: 正确完成RGBMean的计算
+    :param batch_originImgMatrix: 一个数组或者是一个numpy.ndarray，shape是(batchSize,imgSize,imgSize,3)
+    :return: 返回处理正确后的数据，shape不变，返回类型为numpy.ndarray
+    '''
+
 
     #********** Begin **********#
 
-    # originImgMatrix_RGBMean =
-
-    # 直接减就行 todo: 减一减~
-    # subtract_Img =
-
-    # return subtract_Img
 
     #********** End **********#
 
-def VGGPreprocessingBatch(batch_originImgMatrix):
-    for index, img in enumerate(batch_originImgMatrix):
-
-        #********** Begin **********#
-
-        # todo: 调用VGGPreprocessing 处理该样本的数据,并重新复制到到该样本的索引
-
-        #********** End **********#
-        pass
-    return batch_originImgMatrix
 

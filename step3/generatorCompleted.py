@@ -4,7 +4,7 @@ import cv2
 
 
 class batchGenerator:
-    def __init__(self, basePath='..\\step1\\processed\\train_224\\', batchSize=256):
+    def __init__(self, basePath='data/processed/train_224/', batchSize=256):
         self.basePath = basePath
         # 读取全部文件名
         self.fileList = os.listdir(self.basePath)
@@ -31,7 +31,11 @@ class batchGenerator:
         if endIndex >= self.num_files:
             endIndex = None
 
-        for fileName in self.fileList[self.curIndex:endIndex]:
+        # 当前batch再次打乱顺序
+        curSampleList = [fileName for fileName in self.fileList[self.curIndex:endIndex]]
+        np.random.shuffle(curSampleList)
+
+        for fileName in curSampleList:
             # 读取当前图片
             file = os.path.join(self.basePath, fileName)
             image = cv2.imread(file)
@@ -44,9 +48,6 @@ class batchGenerator:
                 print('file name error')
                 print(fileName)
                 exit()
-            # 将（224，224，3）转化为（3，224，224）
-            # 新的数组，三维分别是三个通道
-            # imageNew = np.transpose(image, (2, 0, 1))
 
             # 添加值到待返回的列表
             curBatchX.append(list(image))
@@ -55,18 +56,8 @@ class batchGenerator:
         # 改变curIndex的值
         self.curIndex = endIndex
         if endIndex is None:
+            np.random.shuffle(self.fileList)
             self.curIndex = 0
 
         return np.array(curBatchX), np.array(curBatchY)
 
-# if __name__ == '__main__':
-#     g = batchGenerator(basePath= 'D:\\educoderFile\\vehicle\\valid_224\\' ,batchSize=80)
-#
-#     X,Y = g.getBatch()
-#     print(Y.shape)
-#     X, Y = g.getBatch()
-#     print(Y.shape)
-#     X, Y = g.getBatch()
-#     print(Y.shape)
-#     X, Y = g.getBatch()
-#     # print(X)

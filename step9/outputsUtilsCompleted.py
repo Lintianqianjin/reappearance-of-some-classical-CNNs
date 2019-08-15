@@ -5,14 +5,14 @@ def softmax(x):
     return (np.exp(x).T / np.sum(np.exp(x), axis=1)).T
 
 
-def returnOneHot(NNOutput):
+def returnOneHot(Output):
     '''
-    :param NNOutput: 神经网络的输出
+    :param Output: 神经网络的输出
     :return:
     '''
-    out = np.zeros(NNOutput.shape)
-    idx = NNOutput.argmax(axis=1)
-    out[np.arange(NNOutput.shape[0]), idx] = 1
+    out = np.zeros(Output.shape,dtype=np.int)
+    idx = Output.argmax(axis=1)
+    out[np.arange(Output.shape[0]), idx] = 1
     return out
 
 def computeAccuracy(pred,label):

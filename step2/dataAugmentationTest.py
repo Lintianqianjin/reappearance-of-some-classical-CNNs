@@ -1,40 +1,45 @@
 import os
 import filecmp
-import random
+from dataAugmentationForUsers import dataAugmentation
+from subprocess import *
 
-correctTrainPath = 'processed\\train_224'
+dataAugmentation()
+# 执行用户完成的脚本
+# call('python step2/dataAugmentationForUsers.py')
 
-userTrainPath = 'userOutputs\\train_224'
+correctTrainPath = 'data/flipRightOutputs'
+
+userTrainPath = 'data/flipUserOutputs'
 
 
-usertTrainFile = os.listdir(userTrainPath)
+correctTrainFile = os.listdir(correctTrainPath)
 
 
-# 随机训练集和验证集各抽样10个样本，都一样，肯定就没问题（因为原文件是for循环做的处理）
+# 比对全部水平翻转的图片是否与正确翻转的图片相同
 
 try:
-    for i in range(10):
-        # 从用户的输出文件中抽取样本，只需要考虑用户输出的训练集
-        while True:
-            imgUserTrainName = random.choice(usertTrainFile)
-            if imgUserTrainName.endswith('_flipx.png'):
+    # 从用户的输出文件中抽取样本，只需要考虑用户输出的训练集
+    filelist = [flipimg for flipimg in correctTrainFile]
+    if filelist:
+        for imgUserTrainName in filelist:
+            # 获取文件名
+            imgUserTrainPath = os.path.join(userTrainPath, imgUserTrainName)
+
+            # 找到正确文件中的对应样本的路径
+            imgCorrectTrainPath = os.path.join(correctTrainPath, imgUserTrainName)
+
+
+            bool = filecmp.cmp(imgCorrectTrainPath, imgUserTrainPath)
+
+            if not bool :
+                print(imgCorrectTrainPath)
+                print(imgUserTrainPath)
+                print('未能通过本关测试!产生的图片不相同！',end='')
                 break
 
-        # 获取文件名
-        imgUserTrainPath = os.path.join(userTrainPath, imgUserTrainName)
-
-
-        # 找到正确文件中的对应样本的路径
-        imgCorrectTrainPath = os.path.join(correctTrainPath, imgUserTrainName)
-
-
-        bool = filecmp.cmp(imgCorrectTrainPath, imgUserTrainPath)
-
-
-        if not bool :
-            print('Wrong')
-            break
+        else:
+            print('恭喜你通过本关测试!',end='')
     else:
-        print('Right')
+        print('未能通过本关测试!没有产生翻转文件',end='')
 except:
-    print('Wrong')
+    print('未能通过本关测试!读取图片出错！',end='')

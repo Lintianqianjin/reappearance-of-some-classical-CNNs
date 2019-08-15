@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import os
 
-def dataAugmentation(BasePath = '..\\step1\\processed\\train_224'):
+def dataAugmentation(BasePath = 'data/rightOutputs/train_224'):
 
     fileNames = os.listdir(BasePath)
     for fileName in fileNames:
@@ -11,7 +11,7 @@ def dataAugmentation(BasePath = '..\\step1\\processed\\train_224'):
         image=cv2.imread(file)
 
         img_fliped_X = cv2.flip(image, 1)
-        writePath = os.path.join(BasePath, f'{namePrex}_flipx.png')
+        writePath = os.path.join('data/flipUserOutputs', f'{namePrex}_flipx.png')
         cv2.imwrite(writePath,img_fliped_X)
 
 
