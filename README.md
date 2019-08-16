@@ -13,6 +13,7 @@ each type containing 140 imgs for training and 20 imgs for validation initially
 ---
 ### 文件夹的说明 
 * data: 数据  
+* papers: 参考的论文  
 * step1: 预处理：使用opencv改变图片尺寸  
 * step2: 预处理：简单的数据增强  
 * step3: 简单的Batch Generator 批生成器  
