@@ -15,7 +15,7 @@
 
 深度`CNN`网络达到一定深度后，再一味地增加层数并不能带来进一步地分类性能提高，反而会招致网络收敛变得更慢。并且研究表明，排除数据集过小带来的模型过拟合等问题后， 过深的网络还会使分类准确度下降（相对于较浅些的网络而言），如下图所示，作者比较了56层和20层的卷积网络在`CIFAR-10`数据集上的表现，发现56层的网络在训练集和测试集上的错误率都要更高一些。
 
-![](/api/attachments/375807)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step8/train-loss.png)
 
 这个其实反映的问题是并不是所有的网络都是易于优化的，实验也表明当时还没有方法可以在（较大幅度地）增加网络深度的同时不增加错误率。于是作者就提出了残差结构，用于解决这个问题。
 
@@ -25,17 +25,17 @@
 
 接下来问题就是`F(X)+X`该怎么实现了，于是就有了如下结构，这个直接加到输出层的这条传播路径叫做`shortcut connections`，它相当于完成了单位矩阵的映射操作。
 
-![](/api/attachments/375809)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step8/shortcut.png)
 
 然后作者就将这个结构加入到一个34层的直接堆叠的网络中，并将两者做了一个对比。
 
-![](/api/attachments/375810)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step8/resnetStructure.png)
 
 结果表明，错误率从28.54%下降到了25.03，就是确实是成功的。
 
 之后在论文`《Identity Mappings in Deep Residual Networks》`中，这个基本的残差结构又有了一些其它的改变，这篇论文里提到信息传播部分（`shortcut connections`部分）最好保证简单，这样利于优化。这篇论文里提出了新的一个结构如下（右），并表示有更好的效果。
 
-![](/api/attachments/375814)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step8/resblock.png)
 
 这也是我们本关需要实现的结构。
 
