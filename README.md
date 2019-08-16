@@ -8,7 +8,7 @@ each type containing 140 imgs for training and 20 imgs for validation initially
 实训名称是：python深度学习入门——经典CNN模型搭建。 [实训地址](https://www.educoder.net/shixuns/yzg7bpqu/challenges)  
 
 用TensorFlow主流框架实践一下经典的CNN模型，包括AlexNet、VGGNet、Inception、ResNet。  
-每一个模型都是看了论文之后根据论文内容实现的，每个文件夹中包含一个readme.md文件，有对模型的详细解读。  
+每一个模型都是看了论文之后根据论文内容实现的，每个文件夹中包含一个readme.md文件，有对论文、模型的详细解读。  
 
 ---
 ### 文件夹的说明 
