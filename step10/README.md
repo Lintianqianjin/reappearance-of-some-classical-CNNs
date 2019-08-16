@@ -1,19 +1,15 @@
-[TOC]
-
----
-
-####任务描述
+#### 任务描述
 
 
 本关任务：本关将结合此前各个关卡，正式训练并保存一个网络，并能够随时加载这个模型对位置数据集进行预测。
 
 
-####相关知识
+#### 相关知识
 
 
 为了完成本关任务，你需要掌握：1.如何训练一个网络；2.如何保存一个网络；3.如何加载复用一个网络。
 
-#####如何训练一个网络
+##### 如何训练一个网络
 训练一个`TensorFlow`搭建的神经网络，只需要调用`tf.Session().run()`，需要`run`的算符就是在网络中定义的`train`算符；另外如果在模型的搭建过程中，存在`placeholder`，则需要通过`run()`的参数`feed_dict`传入这些`placeholder`的值，传入的参数是以字典的形式，然后字典的`key`是搭建过程中`placeholder`对应的变量名，`value`就是对应的需要传入的值。
 
 示例如下：
@@ -37,12 +33,12 @@ with tf.Session() as sess:
 	_, cur_loss=sess.run([train, loss],feed_dict={batchImgInput: X, labels: Y, keeProb: keep_prob_train, BNTraining: True})
 ```
 
-#####如何保存一个网络
+##### 如何保存一个网络
 
 
-调用`tf.train.Saver()`来完成网络的保存，使用方法非常简单，两行代码即可。
+调用`tf.train.Saver()`来完成网络的保存，使用方法非常简单，两行代码即可。  
 
-示例如下：
+示例如下：  
 
 
 ```python
@@ -54,7 +50,7 @@ saver.save(sess, "Model/ResNet")
 
 这里还需要特别提醒一些东西~
 
-######1.Saver()的一些参数
+###### 1.Saver()的一些参数
 
 
 常用到的有———
@@ -72,7 +68,7 @@ saver.save(sess, "Model/ResNet")
 还有一些参数，大家有兴趣了解可以去看官方`API`(https://tensorflow.google.cn/api_docs/python/tf/train/Saver)
 
 
-######2.Save()的一些参数
+###### 2.Save()的一些参数
 
 
 其实主要就一个参数`global_step`，可以标记保存的是第几次被保存的。这个直接看官方示例，非常简单易懂：
@@ -85,7 +81,7 @@ saver.save(sess, 'my-model', global_step=1000) ==> filename: 'my-model-1000'
 ```
 
 
-######3.保存模型后输出的文件
+###### 3.保存模型后输出的文件
 
 
 `save()`之后，设定的文件夹下，将会出现四个文件，如下：
@@ -114,7 +110,7 @@ all_model_checkpoint_paths: "ResNet"
 `index`和`data`保存了模型的所有的变量和对应的数值，方便后续加载使用。
 
 
-#####如何加载复用一个网络
+##### 如何加载复用一个网络
 
 
 如果我们只保存最优的一个网络，加载该模型只需要两行代码。
@@ -164,11 +160,11 @@ for op in graph.get_operations():
 
 这样可以打印所有算符节点的名字，然后大家可以搜索一下关键字，找一找。
 
-####编程要求
+#### 编程要求
 
 根据提示，在右侧编辑器补充代码，训练得到你想要的模型，并保存到指定的路径。
 
-####测试说明
+#### 测试说明
 
 平台会对你编写的代码进行测试：
 
