@@ -18,7 +18,7 @@
 
 用这个非常经典的图来帮助理解一下。
 
-![](/api/attachments/378522)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step6/%E6%84%9F%E5%8F%97%E9%87%8E.png)
 
 ##### VGGNet 的特点和结构
 
@@ -37,7 +37,7 @@
 
 原文中提到了6个模型（其中`A-LRN`不用管，其提出的目的是证明`LRN`在这个网络中没啥用。），如下图：
 
-![](/api/attachments/374727)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step6/VGGstructure.png)
 
 **其中`C`是比较经典的，我们就来实现一个**。可以看出`VGG`的特点其实就跟它论文的题目一样，就是深。因为任务是个比较小的四分类任务，数据集也不大，本次任务在全连接部分神经元数目有所改变，中间两层神经元数分别改为512和256。
 
@@ -46,7 +46,7 @@
 虽然本关只需搭建网络框架，但还是想提几句。这是我训练的最后几个`batch`的结果，9 个`batch`是一个`epoch`。损失是在当前`batch`上的损失，`acc`是在验证集上的准确率。
 
 
-![](/api/attachments/379670)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step6/acc.png)
 
 可以看到效果其实不是特别好，只到了 0.8 左右的准确率。这个原因很有可能是网络对于任务而言有点过深了。我去除掉两个 512 个卷积核的部分（去掉了 6 层卷积层）后，一般效果能到 0.88 以上。
 
