@@ -109,7 +109,7 @@ plt.show()
 
 输出：
 
-![](/api/attachments/373355)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step9/mat.png)
 
 #### 编程要求
 
