@@ -31,7 +31,7 @@
 
 作者使用`ReLu`激活函数的原因是模型训练起来，到达同样的精度，更快。如下图，实线是使用`ReLu`激活，虚线是使用`tanh`激活，错误率下降到25%时，后者需要训练的次数是前者的 6 倍作用
 
-![](![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step4/train-loss.png))
+![](![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step4/train-loss.png)
 
 ###### 2.使用多个 GPU 训练
 
@@ -41,7 +41,7 @@
 
 作者对经过`ReLu`激活后的值，使用`LRN`做了归一化，如下,$$a$$是原始值，$$b$$是正则化之后的值,$$n$$即定义的局部的范围，其它参数均为常数，需要预先定义。有兴趣的可以去看论文，这里不赘述。
 
-![](![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step4/lrn.png))
+![](![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step4/lrn.png)
 
 一般而言，归一化后的输出会集中在一个比较小范围，是更利于模型的训练的。
 
