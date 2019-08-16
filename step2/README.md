@@ -17,7 +17,7 @@
 
 原图：
 
-![](/api/attachments/374284)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step2/ori.png)
 
 ```python
 import cv2
@@ -39,15 +39,15 @@ cv2.imwrite('fliped_X_Y.png',img_fliped_X_Y)
 
 `fliped_X.png`
 
-![](/api/attachments/374285)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step2/x.png)
 
 `fliped_Y.png`
 
-![](/api/attachments/374286)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step2/y.png)
 
 `fliped_X_Y.png`
 
-![](/api/attachments/374287)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step2/xy.png)
 
 
 **在本次任务中，我们只需要用到水平翻转，因为结合现实情况，一般做车辆的识别，不会遇到倒着的车。**
@@ -72,7 +72,7 @@ cv2.imwrite('translation.png',img_change)
 
 `translation.png`
 
-![](/api/attachments/374300)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step2/translation.png.png)
 
 #### 编程要求
 
