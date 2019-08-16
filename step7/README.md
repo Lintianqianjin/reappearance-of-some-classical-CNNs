@@ -22,13 +22,13 @@
 
 作者采用不同大小的卷积核对上一层的输入做卷积，然后拼接将它们的输出拼接。另外由于池化对于当前的卷积网络的成功十分重要，所以作者建议在每一个`Inception`模块中也加入一个池化。那么最初的结构就如下所示。值得一提的是作者这里选用`1×1`、`3×3`、`5×5`的卷积核的原因并没有什么特别的原因。不同大小的卷积核可以提取不同尺度的信息，可以理解为人们在看物体时是从不同分辨率的层次去接受信息的。
 
-![](/api/attachments/375513)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/1.png)
 
 ###### 1.2使用`1×1`卷积核降维
 
 上述网络还有一个问题，就是输入的数据的通道数如果比较大，那么使用`3×3`、`5×5`的卷积核对计算资源的需求就还是比较高的，所以作者提出使用`1×1`的卷积核在做`3×3`、`5×5`的卷积核的卷积操作前减少通道数。另外作者还提到，这里`1×1`的卷积核的其实相当于一个线性的激活函数，这也是另外一个作用。这样该模块就是如下的结构。
 
-![](/api/attachments/375525)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/2.png)
 
 ###### 1.3使用平均池化替代全连接层
 
@@ -37,7 +37,7 @@
 ###### 1.4中间层的损失
 `GoogleNet`在22层的网络的中间的两个大的部分，分别增加了一个连接了全连接层的`softmax`分类器，下图截取了一部分以供参考。在训练过程中，损失包括这两个分类器的损失，这个目的就是为了解决梯度消失。
 
-![](/api/attachments/375529)  
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/midloss.png)  
 
 ##### PART 2
 
@@ -59,15 +59,15 @@
 
 一般我们使用池化操作减小特征图（`feature map`）的尺寸，但是这样会使得表示能力变差，所以一般需要在池化之前，增加卷积核的个数，但是这样运算量就会增大，因为要对更大的特征图做卷积，并且池化的时候也是更多的维，示例图如下。
 
-![](/api/attachments/375553)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/red1.png)
 
 因此作者提出了一个新的方法，并行的池化层和卷积层，卷积和池化的步长都是2，保证输出维度相同，如下：
 
-![](/api/attachments/375555)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/red2.png)
 
 具体的细节如下：
 
-![](/api/attachments/375554)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/red3.png)
 
 ###### 2.4标签平滑正则项
 
@@ -79,17 +79,17 @@
 
 ##### `Inception_traditional`:
 
-![](/api/attachments/375801)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/Inception_traditional.png)
  
 ##### `Inception_AsymmetricConv`:
 
 双向箭头意思是顺序调换
 
-![](/api/attachments/375802)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/Inception_AsymmetricConv.png)
 
 ##### `Inception_parallelAsymmetricConv`：
 
-![](/api/attachments/375803)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/Inception_parallelAsymmetricConv.png)
 
 ##### `reduction`：
 
@@ -97,21 +97,21 @@
 
 ##### `InitialPart`：
 
-![](/api/attachments/379961)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/InitialPart.png)
 
 我训练的一些结果：
 
 堆叠三个`Inception_traditional`:
 
-![](/api/attachments/379672)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/loss1.png)
 
 堆叠三个`Inception_AsymmetricConv`:
 
-![](/api/attachments/379673)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/loss2.png)
 
 各堆叠一个，中间有`reduction`:
 
-![](/api/attachments/379956)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step7/loss3.png)
 
 #### 测试说明
 
