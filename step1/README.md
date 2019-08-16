@@ -17,7 +17,7 @@
 `python`标准库`os`中的 `walk()`方法可以遍历一个路径下的所有文件。
 如果当前所处的路径如下，包含一个文件夹`dataSet`,和三个文件，`dataSet`文件夹下又有一个文件1。
 
-![](/api/attachments/371752)
+![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step1/1.png)
 
 那么在当前路径下执行以下代码后
 
