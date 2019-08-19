@@ -25,7 +25,7 @@
 
 激活函数简单来说就是对一层的输出再经过一个函数变化后输入下一层。
 
-某层输出定义为$$X$$，激活函数定义为$$f$$，下一层接收到的数据为$$f(X)$$。
+某层输出定义为`X`，激活函数定义为`f`，下一层接收到的数据为`f(X)`。
 
 ![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step4/relu.png)
 
@@ -39,7 +39,7 @@
 
 ###### 3.提出局部响应归一化（ Local Response Normalization，LRN ）
 
-作者对经过`ReLu`激活后的值，使用`LRN`做了归一化，如下,$$a$$是原始值，$$b$$是正则化之后的值,$$n$$即定义的局部的范围，其它参数均为常数，需要预先定义。有兴趣的可以去看论文，这里不赘述。
+作者对经过`ReLu`激活后的值，使用`LRN`做了归一化，如下,`a`是原始值，`b`是正则化之后的值,`n`即定义的局部的范围，其它参数均为常数，需要预先定义。有兴趣的可以去看论文，这里不赘述。
 
 ![](![](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/blob/master/img/step4/lrn.png)
 
