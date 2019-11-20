@@ -12,17 +12,17 @@ each type containing 140 imgs for training and 20 imgs for validation initially
 
 ---
 ### 文件夹的说明 
-* data: 数据  
-* papers: 参考的论文  
-* step1: 预处理：使用opencv改变图片尺寸  
-* step2: 预处理：简单的数据增强  
-* step3: 简单的Batch Generator 批生成器  
-* step4: AlexNet  
-* step5: VGGNet模型输入的预处理  
-* step6: VGGNet  
-* step7: InceptionNet  
-* step8: ResNet  
-* step9: 使用numpy处理网络的输出  
-* step10: 训练、保存及复用模型  
+* data: [数据](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/data)  
+* papers: [参考的论文](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/papers)  
+* step1: [预处理：使用opencv改变图片尺寸](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step1)  
+* step2: [预处理：简单的数据增强](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step2)  
+* step3: [简单的Batch Generator 批生成器](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step3)  
+* step4: [AlexNet](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step4)  
+* step5: [VGGNet模型输入的预处理](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step5)  
+* step6: [VGGNet](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step6)  
+* step7: [InceptionNet](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step7)  
+* step8: [ResNet](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step8)  
+* step9: [使用numpy处理网络的输出](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step9)  
+* step10: [训练、保存及复用模型](https://github.com/Lintianqianjin/reappearance-of-some-classical-CNNs/tree/master/step10)  
 ---
 
